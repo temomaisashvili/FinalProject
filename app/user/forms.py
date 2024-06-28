@@ -1,9 +1,9 @@
 from flask_wtf import FlaskForm
-from wtforms import FormField
-from wtforms.fields import StringField, EmailField, PasswordField, SubmitField, \
-    IntegerField, TextAreaField, SelectMultipleField, FileField
-from wtforms.validators import data_required, length, email, ValidationError
-from flask_wtf.file import FileRequired, FileAllowed
+from wtforms.fields.numeric import IntegerField
+from wtforms.fields.simple import EmailField, PasswordField, SubmitField, StringField
+from wtforms.validators import data_required, email
+
+
 
 
 class LoginForm(FlaskForm):
@@ -26,10 +26,3 @@ class RegistrationForm(LoginForm):
                           render_kw={'placeholder': 'შეიყვანეთ მისამართ', 'class': 'form-control'})
     submit = SubmitField('Registration', render_kw={'class': 'btn btn-primary', 'style': 'text-align: center;'})
 
-
-class TourForm(FlaskForm):
-    title = StringField('Title', validators=[data_required()],
-                        render_kw={'placeholder': 'შეიყვანეთ პოსტის სათაური', 'class': 'form-control'})
-    content = TextAreaField('Title', validators=[data_required()],
-                            render_kw={'placeholder': 'შეიყვანეთ პოსტის კონტენტი', 'class': 'form-control'})
-    submit = SubmitField('Create Post', render_kw={'class': 'btn btn-primary', 'style': 'text-align: center;'})
