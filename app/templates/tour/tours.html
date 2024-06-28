@@ -1,4 +1,4 @@
-{% extends '././templates/base.html' %}
+{% extends 'base.html' %}
 {% block title %}
 Users Page
 {% endblock %}
@@ -22,7 +22,7 @@ Users Page
       <td>{{ user.last_name }} </td>
       <td>
 
-        <a href="{{ url_for('create_tours', user_id=user.id) }}" style="color: black; font-size: 20px">+</a>
+        <a href="{{ url_for('tour.create_tours', user_id=user.id) }}" style="color: black; font-size: 20px">+</a>
       </td>
     </tr>
 

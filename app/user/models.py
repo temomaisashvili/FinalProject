@@ -17,6 +17,6 @@ class User(db.Model):
     tours = db.relationship('Tour', backref='user', lazy='dynamic', cascade='all, delete')
 
     @classmethod
-    def authenticate(cls, email, password):
-        user = cls.query.filter_by(email=email, password=password).first()
+    def get_user_by_email(cls, email):
+        user = cls.query.filter_by(email=email).first()
         return user

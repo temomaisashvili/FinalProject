@@ -3,7 +3,6 @@ import datetime
 from app.extensions import db
 from sqlalchemy import SmallInteger, String, DateTime
 from sqlalchemy.orm import mapped_column, Mapped
-from sqlalchemy.testing import db
 
 
 class Tour(db.Model):

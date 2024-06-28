@@ -7,7 +7,9 @@ from app.user.models import User
 from app.decorators import is_not_authenticated
 from .forms import LoginForm, RegistrationForm
 from app.extensions import db
-template_folder = os.path.abspath('app/user/templates')
+
+
+template_folder = os.path.abspath('app/templates')
 user_bp = Blueprint('user', __name__, template_folder=template_folder, url_prefix='/user')
 
 
@@ -20,15 +22,18 @@ def login():
         if form.validate_on_submit():
             email = form.email.data
             password = form.password.data
-            user = User.authenticate(email, password)
-            if not user and not checkpw(password.encode('utf-8'), user.password):
-
-                flash('Incorrect, Try Again!')
-                return redirect('login')
-            session['user_id'] = user.id
-            return redirect(url_for('home'))
-        return render_template('login.html', form=form)
-    return render_template('login.html', form=form)
+            user = User.get_user_by_email(email)
+            print(user)
+            if user:
+                if not checkpw(password.encode('utf-8'), user.password):
+                    flash('Incorrect, Try Again!')
+                    return redirect(url_for('user.login'))
+                session['user_id'] = user.id
+                return redirect(url_for('user.home'))
+            flash('Incorrect, Try Again!')
+            return redirect(url_for('user.login'))
+        return render_template('user/login.html', form=form)
+    return render_template('user/login.html', form=form)
 
 
 @user_bp.route('/register', methods=["POST", "GET"])
@@ -57,10 +62,10 @@ def register():
             db.session.add(user)
             db.session.commit()
             flash('User Successfully Created!!')
-            return redirect(url_for('home'))
+            return redirect(url_for('user.home'))
         print(form.errors)
-        return render_template('register.html', form=form)
-    return render_template('register.html', form=form)
+        return render_template('user/register.html', form=form)
+    return render_template('user/register.html', form=form)
 
 
 @user_bp.route('/user_tours/<int:user_id>')
@@ -68,9 +73,10 @@ def user_tours(user_id):
     user = User.query.get(user_id)
     if not user:
         flash(f'User With ID={user_id} Does Not Exists!')
-        return redirect(url_for('tours'))
+        return redirect(url_for('tour.tours'))
     tours = user.tours
-    return render_template('tours.html', tours=tours, user_id=user_id)
+    return render_template('tour/tours.html', tours=tours, user_id=user_id)
+
 
 @user_bp.route('/logout')
 def logout():
@@ -81,4 +87,4 @@ def logout():
 @user_bp.route('/')
 @user_bp.route('/home')
 def home():
-    return render_template('index.html')
+    return render_template('tour/index.html')

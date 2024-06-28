@@ -1,4 +1,4 @@
-{% extends '././templates/base.html' %}
+{% extends 'base.html' %}
 {% block title %}
 Available Tours Page
 {% endblock %}
@@ -7,7 +7,7 @@ Available Tours Page
 {% block content %}
 
 <div style="display: flex; justify-content: center;">
-  <form action="{{ url_for('create_tours', user_id=user_id) }}" method="post" style="width: 30%;">
+  <form action="{{ url_for('tour.create_tours', user_id=user_id) }}" method="post" style="width: 30%;">
     {{ form.hidden_tag() }}
     {% from 'macros.html' import render_field %}
   <div class="mb-3">
